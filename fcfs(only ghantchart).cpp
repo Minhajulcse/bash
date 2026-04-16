@@ -1,47 +1,56 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
 
-#define int long long
-#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-
-// Structure to hold process data
+// Structure to represent a process
 struct Process {
-    string id;
-    int at;
-    int bt;
+    std::string id;
+    int at; // Arrival Time
+    int bt; // Burst Time
 };
 
-// Custom comparator for the sorting logic
-bool compareProcesses(const Process& a, const Process& b) {
-    if (a.at == b.at) {
-        return a.bt > b.bt; // Tie-break: largest burst time first
+// Custom comparator function for sorting the processes
+bool compareProcesses(const Process& p1, const Process& p2) {
+    // Primary condition: Sort by Arrival Time (Ascending)
+    if (p1.at != p2.at) {
+        return p1.at < p2.at; 
     }
-    return a.at < b.at;     // Primary: earliest arrival time first
+    // Tie-breaker condition: Sort by Burst Time (Descending)
+    return p1.bt > p2.bt; 
 }
 
-int32_t main() {
-    optimize();
-    
+int main() {
     int n;
-    cout << "Enter number of processes: ";
-    cin >> n;
-    
-    vector<Process> p(n);
-    cout << "Enter Process ID, AT, and BT for each process:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> p[i].id >> p[i].at >> p[i].bt;
+    // std::cout << "Enter the number of processes: ";
+    std::cin >> n;
+
+    if (n <= 0) {
+        std::cout << "Number of processes must be greater than 0." << std::endl;
+        return 1; 
     }
+
+    std::vector<Process> processes(n);
+
+    // std::cout << "Enter ID, Arrival Time (AT), and Burst Time (BT) for each process:" << std::endl;
     
-    // Sort the processes using the custom logic
-    sort(p.begin(), p.end(), compareProcesses);
-    
-    // Print the output format requested in the lab
-    cout << "Output:\n";
-    for (int i = 0; i < n; i++) {
-        cout << p[i].id;
-        if (i < n - 1) cout << " -> ";
+    // Loop to take user input for ID, AT, and BT
+    for (int i = 0; i < n; ++i) {
+        std::cin >> processes[i].id >> processes[i].at >> processes[i].bt;
     }
-    cout << "\n";
-    
+
+    // Sort the processes using the custom rules
+    std::sort(processes.begin(), processes.end(), compareProcesses);
+
+    // Print the output in the required format
+    std::cout << "Output:\n";
+    for (size_t i = 0; i < processes.size(); ++i) {
+        std::cout << processes[i].id;
+        if (i < processes.size() - 1) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
+
     return 0;
 }
